@@ -2,12 +2,11 @@ import React from 'react';
 
 const User = (props) => {
     return(
-        
         <div className="user">
             <img src={props.avatar_url} alt="" />
            <p>{props.name}</p> 
-           <p>{props.url}</p>
-           <p>Followers: {props.followers}</p>
+           <a href={props.url}>View Profile</a>
+            <p>Followers: {props.followers}</p>
            <p>Following: {props.following}</p>
         </div> 
     );
