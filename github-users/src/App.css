@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #0a7261;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -35,4 +35,56 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* .userDiv {
+  border: 1px solid green;
+} */
+
+.userDetails {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.followerDiv {
+  width: 60%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  border: 2px solid white;
+}
+
+.followerContainer {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ width: 30%;
+ margin: 1%;
+ margin-bottom: 3%;
+}
+
+img {
+  width: 70%;
+  margin-top: 3%;
+  border-radius: 1em;
+  border: 3px solid #310344;
+}
+
+.userImg {
+  margin-top: 10%;
+}
+
+a {
+  text-decoration: none;
+  color: #f5faf9;
+}
+
+a:hover {
+  color: #68148c;
+}
+
+.formInput {
+  margin: 5% 0;
 }

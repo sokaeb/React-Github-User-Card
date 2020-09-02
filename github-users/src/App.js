@@ -8,13 +8,14 @@ class App extends React.Component {
   constructor(){
     super();
     this.state = {
-      user : {}
+      user : [],
+      login: ''
     };
   }
 
   // fetching user data from Github API
   componentDidMount(){
-    axios.get('https://api.github.com/users/sokaebe')
+    axios.get('https://api.github.com/users/sokaeb')
     .then(res => {
       // console.log(res.data); 
       this.setState({
@@ -26,43 +27,72 @@ class App extends React.Component {
     });
   };
 
-  // fetching user's followers data
-  // componentDidUpdate(prevProps, prevState){
-  //   if (prevProps.followers !== this.state.followers){
-  //   axios.get('https://api.github.com/users/sokaeb/followers')
-  //   .then(res => {
-  //     // console.log(res.data); // this is an ARRAY of objects
-  //     this.setState({
-  //       followers: res.data
-  //     }); 
-  //   })
-  //   .catch(err => {
-  //     console.log(err)
-  //   });
-  // };
-  // };
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.user !== this.state.user) {
+      if(this.state.login === ' '){
+        axios
+          .get(`https://api.github.com/users/${this.state.user.login}`)
+          .then(res => {
+            this.setState({
+              user: res.data,
+              login: 'this.state.login'
+            });
+          })
+          .catch(err => {
+            console.log(err)
+          });
+      };
+    };
+  }
 
-//   componentDidUpdate(prevProps, prevState) {
-//   // always use an if statement to avoid infinite loops everytime this method is being //used -- its always checking to see if state changed, if so, do something
-//   (prevProps.user !== this.state.users)
-// }
+  handleSubmit = evt => {
+    evt.preventDefault();
+    axios
+      .get(`https://api.github.com/users/${this.state.login}`)
+      .then(res => {
+        this.setState({
+          user: res.data,
+        });
+      })
+      .catch(err => {
+        console.log(err)
+      });
+};
 
-  // use an interpolated string to make a custom url
-// axios.get(`https://api.github.com/api/${this.state.followers}`)
+  handleChange = evt => {
+    this.setState({
+      login: evt.target.value
+    });
+    // console.log(evt.target.value)
+};
 
   render() {
   return (
     <div className="App">
       <header className="App-header">
-                <User
+        {/* <form className="formInput" onSubmit={this.handleSubmit}> */}
+          <input 
+            className="searchBar"
+            type="text"
+            placeholder="Search By Username"
+            onChange={this.handleChange} 
+            value={this.state.login}
+          />
+        <button className="submitBtn" onClick={this.handleSubmit}>Search User</button>
+      {/* </form> */}
+               <div className="userDiv">
+               <User
                 key={this.state.user.id}
                 name={this.state.user.name}
-                url={this.state.user.url}
+                url={this.state.user.html_url}
                 avatar_url={this.state.user.avatar_url}
                 followers={this.state.user.followers}
                 following={this.state.user.following}
                 />
-                 <Follower />
+                </div>
+                <div>
+                  <Follower />
+                </div>
       </header>
     </div>
   );
@@ -70,14 +100,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-
-// After initializing state order as following:
-// Component lifecycle methods
-// Event handlers
-// Render
-  // if using arrow functions and just using state, constructor can be taken out
-  // state = {
-  //   users: [],
-  //   followers: []
-  // };

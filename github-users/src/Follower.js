@@ -5,33 +5,35 @@ class Follower extends React.Component {
     constructor(){
         super();
         this.state ={
-            follower: {}
+            follower: []
         };
     }
 
     componentDidMount(){
         axios.get('https://api.github.com/users/sokaeb/followers')
         .then(res => {
-        //   console.log(res.data); // array of objects
-        res.data.map((item)=> {
+        // console.log(res.data); // array of objects
             this.setState({
-                follower: item
+                follower: res.data
             });
-            return this.state;
-        });
+        // console.log(this.state.follower)
         })
         .catch(err => {
           console.log(err)
         });
       };
 
+
     render(){
         return(
-        <div>
-               <div className="follower-container">
-                   <img src={this.state.follower.avatar_url} alt="" />
-                   <a href={this.state.follower.html_url}>View Profile</a>
-               </div>
+        <div className="followerDiv">
+            {this.state.follower.map((item) => (
+            <div className="followerContainer" key={item.id}>
+            <img src={item.avatar_url} alt="" />
+            <a href={item.html_url} target="_blank" rel="noopener noreferrer">View Profile</a>
+            </div>
+            ))}
+              
           </div>
         );
     };
