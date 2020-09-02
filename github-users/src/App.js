@@ -9,13 +9,15 @@ class App extends React.Component {
     super();
     this.state = {
       user : [],
-      login: ''
+      followers: [],
+      login: " "
     };
   }
 
   // fetching user data from Github API
   componentDidMount(){
-    axios.get('https://api.github.com/users/sokaeb')
+    axios
+    .get('https://api.github.com/users/sokaeb')
     .then(res => {
       // console.log(res.data); 
       this.setState({
@@ -25,34 +27,58 @@ class App extends React.Component {
     .catch(err => {
       console.log(err)
     });
+    axios
+    .get('https://api.github.com/users/sokaeb/followers')
+    .then(res => {
+      // console.log(res.data)
+      this.setState({
+        followers: res.data
+      })
+    })
+    .catch(err => {
+      console.log(err)
+    });
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.user !== this.state.user) {
-      if(this.state.login === ' '){
-        axios
-          .get(`https://api.github.com/users/${this.state.user.login}`)
-          .then(res => {
-            this.setState({
-              user: res.data,
-              login: 'this.state.login'
-            });
-          })
-          .catch(err => {
-            console.log(err)
-          });
-      };
-    };
-  }
-
-  handleSubmit = evt => {
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (prevState.user.login !== this.state.user.login) {
+  //     console.log(`Update ${this.state.user.login}`);
+  //       axios
+  //         .get(`https://api.github.com/users/${this.state.user.login}`)
+  //         console.log(`update 2 ${this.state.user}`)
+  //         // .then(res => {
+  //         //   this.setState({
+  //         //     user: res.data,
+  //         //     login: 'this.state.login'
+  //         //   });
+  //         // })
+  //         // .catch(err => {
+  //         //   console.log(err)
+  //         // });
+  //   };
+  // }
+ 
+  fetchData = evt => {
+    console.log(`Update ${this.state.login}`)
     evt.preventDefault();
     axios
       .get(`https://api.github.com/users/${this.state.login}`)
       .then(res => {
+        console.log(res.data)
         this.setState({
           user: res.data,
         });
+      })
+      .catch(err => {
+        console.log(err)
+      });
+    axios
+      .get(`https://api.github.com/users/${this.state.login}/followers`)
+      .then(res => {
+        // console.log(res.data)
+        this.setState({
+          followers: res.data
+        })
       })
       .catch(err => {
         console.log(err)
@@ -78,20 +104,19 @@ class App extends React.Component {
             onChange={this.handleChange} 
             value={this.state.login}
           />
-        <button className="submitBtn" onClick={this.handleSubmit}>Search User</button>
+        <button className="submitBtn" onClick={this.fetchData}>Search User</button>
       {/* </form> */}
                <div className="userDiv">
                <User
                 key={this.state.user.id}
-                name={this.state.user.name}
-                url={this.state.user.html_url}
-                avatar_url={this.state.user.avatar_url}
-                followers={this.state.user.followers}
-                following={this.state.user.following}
+                userData={this.state.user}
                 />
                 </div>
                 <div>
-                  <Follower />
+                  <Follower
+                    key={this.state.followers.id}
+                    followerData={this.state.followers}
+                  />
                 </div>
       </header>
     </div>

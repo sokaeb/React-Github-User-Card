@@ -88,3 +88,8 @@ a:hover {
 .formInput {
   margin: 5% 0;
 }
+
+.searchBar {
+  border: 2px solid #68148c;
+  margin: 10% 0 2%;
+}
