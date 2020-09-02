@@ -59,7 +59,7 @@ class App extends React.Component {
   // }
  
   fetchData = evt => {
-    console.log(`Update ${this.state.login}`)
+    console.log(`Update ${this.state.login}`) // this only works with this line...?
     evt.preventDefault();
     axios
       .get(`https://api.github.com/users/${this.state.login}`)
@@ -96,7 +96,7 @@ class App extends React.Component {
   return (
     <div className="App">
       <header className="App-header">
-        {/* <form className="formInput" onSubmit={this.handleSubmit}> */}
+        {/* <form className="formInput" onSubmit={this.fetchData}> */}
           <input 
             className="searchBar"
             type="text"
